@@ -1,12 +1,12 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, View, Button } from "react-native";
 import { useQuery } from "react-query";
-import Pokemon from "./components/Pokemon";
+import Pokemon from "../components/Pokemon";
 
-const Home = () => {
+const PokemonsScreen = ({ navigation }) => {
   const { isLoading, error, data } = useQuery("repoData", () =>
-    fetch("https://pokeapi.co/api/v2/pokemon/1").then((res) => res.json())
+    fetch("https://pokeapi.co/api/v2/pokemon/").then((res) => res.json())
   );
 
   if (isLoading) {
@@ -27,7 +27,13 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      <Pokemon pokemon={data} />
+      <FlatList
+        data={data.results}
+        renderItem={({ item }) => (
+          <Pokemon pokemon={item} navigation={navigation} />
+        )}
+        keyExtractor={(item) => item.name}
+      />
       <StatusBar style="auto" />
     </View>
   );
@@ -36,10 +42,11 @@ const Home = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "yellow",
     alignItems: "center",
+    paddingVertical: 100,
     justifyContent: "center",
   },
 });
 
-export default Home;
+export default PokemonsScreen;

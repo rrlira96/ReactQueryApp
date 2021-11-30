@@ -1,14 +1,24 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { QueryClient, QueryClientProvider } from "react-query";
-import Home from "./Home";
+import PokemonsScreen from "./Screens/PokemonsScreen";
+import PokemonDetail from "./Screens/PokemonDetail";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const queryClient = new QueryClient();
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Home />
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Pokemons" component={PokemonsScreen} />
+          <Stack.Screen name="Details" component={PokemonDetail} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </QueryClientProvider>
   );
 }
